@@ -1,0 +1,9 @@
+version: 0.1
+
+endpoints:
+  - name: "Task Tracker Rest Api"
+    port: 5068
+    type: REST
+    networkVisibility: Public
+    context: /
+  
