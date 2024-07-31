@@ -1,3 +1,16 @@
+<section class="createTask">
+    <div class="input-group">
+      <input type="text" #inputTask class="form-control" placeholder="Type a Task" required>
+      <button class="btn-add" type="button" (click)="appendTask(inputTask)" >
+        +
+      </button>
+    </div>
+  </section>
 
-<app-task *ngFor="let item of taskList" [task]="item">pan</app-task>
+  <section class="showTasks">
+    <app-task *ngFor="let item of taskList" [task]="item">pan</app-task>
+
+  </section>
+
+
 
