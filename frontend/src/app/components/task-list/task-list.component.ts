@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Task } from '../../services/task';
 import { TaskComponent } from "../task/task.component";
 import { CommonModule } from '@angular/common';
+import { TaskService } from '../../services/task.service';
 
 @Component({
   selector: 'app-task-list',
@@ -11,11 +12,15 @@ import { CommonModule } from '@angular/common';
   styleUrl: './task-list.component.css'
 })
 export class TaskListComponent {
-  taskList: Task[] = [{id:1,name:"Pan"}];
+  taskService: TaskService = inject(TaskService);
+  taskList: Task[] = [];
 
-  public appendTask(elem: HTMLInputElement) {
-    const newTask:Task = {name: elem.value}
-    elem.value="";
-    this.taskList.push(newTask);    
+  constructor() {
+    this.taskList = this.taskService.getAllTasks();
+  }
+
+  addTask(task: HTMLInputElement){
+    this.taskService.addTask({name: task.value, isCompleted: false});
+    this.taskList = this.taskService.getAllTasks();
   }
 }
