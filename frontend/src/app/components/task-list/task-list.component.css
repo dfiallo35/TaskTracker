@@ -21,7 +21,7 @@
     overflow-y: auto;
 }
 
-.task-input-text{
+.task-input input{
     border: 2px solid lightgray;
     border-radius: 5px 0px 0px 5px;
     padding: 5px;
@@ -31,11 +31,21 @@
     width: calc(var(--task-main-width) * 0.7);
 }
 
-.task-input-btn{
+.task-input button{
     margin: 10px 0px;
     cursor: pointer;
     border: 2px solid gray;
     background-color: lightgray;
     border-radius: 0px 5px 5px 0px;
-    
+}
+
+.task-date{
+    position: relative;
+    margin: 0px 10px;
+}
+
+.task-date p{
+    color: gray;
+    font-size: 14px;
+    text-align: right;
 }

@@ -1,7 +1,12 @@
 <div class="task-main">
+
+  <div class="task-date">
+    <p>{{getCurrentDate()}}</p>
+  </div>
+
   <div class="task-input">
-    <input type="text" #inputTask class="task-input-text" placeholder="Type a Task" required>
-    <button class="task-input-btn" type="button" (click)="addTask(inputTask)" >
+    <input type="text" #inputTask placeholder="Type a Task" required>
+    <button type="button" (click)="addTask(inputTask)" >
       <fa-icon [icon]="faPlus"></fa-icon>
     </button>
   </div>
