@@ -29,4 +29,8 @@ export class TaskListComponent {
     this.taskList = this.taskService.getAllTasks();
     task.value = '';
   }
+
+  getCurrentDate(): string {
+    return new Date().toDateString();
+  }
 }
