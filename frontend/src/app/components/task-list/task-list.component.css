@@ -1,5 +1,16 @@
 .task-main{
     border: 1px solid lightgray;
+    border-radius: 10px;
     box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.2);
     max-width: 900px;
+    margin: auto;
+    height: 700px;
+}
+
+.task-input{
+    
+}
+
+.task-list{
+    overflow-y: auto;
 }
