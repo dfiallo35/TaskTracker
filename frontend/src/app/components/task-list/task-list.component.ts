@@ -3,13 +3,13 @@ import { Task } from '../../services/task';
 import { TaskComponent } from "../task/task.component";
 import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/task.service';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+// import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [TaskComponent, CommonModule, FontAwesomeModule],
+  imports: [TaskComponent, CommonModule],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.css'
 })
@@ -18,7 +18,7 @@ export class TaskListComponent {
   taskList: Task[] = [];
 
   // ICONS
-  faPlus = faPlus;
+  // faPlus = faPlus;
 
   constructor() {
     this.taskList = this.taskService.getAllTasks();
