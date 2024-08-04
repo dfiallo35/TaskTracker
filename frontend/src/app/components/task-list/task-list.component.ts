@@ -25,9 +25,11 @@ export class TaskListComponent {
   }
 
   addTask(task: HTMLInputElement){
-    this.taskService.addTask({name: task.value, isCompleted: false});
-    this.taskList = this.taskService.getAllTasks();
-    task.value = '';
+    if (task.value !== '') {
+      this.taskService.addTask({name: task.value, isCompleted: false});
+      this.taskList = this.taskService.getAllTasks();
+      task.value = '';
+    }
   }
 
   getCurrentDate(): string {
