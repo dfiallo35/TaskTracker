@@ -3,7 +3,17 @@ using Microsoft.AspNetCore.Rewrite;
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSingleton<ITaskService>(new SqliteTaskService());
+
+// Configure Services
+builder.Services.AddSingleton<ITaskService>(new InMemoryTaskService());
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAllOrigins",
+        builder => {
+            builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        });
+});
+
+
 var app = builder.Build();
 
 // Redirect /tasks to /todos
