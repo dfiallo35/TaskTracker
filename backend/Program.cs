@@ -20,6 +20,9 @@ var app = builder.Build();
 app.UseRewriter(new RewriteOptions().AddRedirect("tasks/(.*)", "todos/$1"));
 
 
+
+app.MapGet("/", () => "Hello World!");
+
 // Add Todo Endpoint
 app.MapPost("/todos", (Todo task, ITaskService service) => {
     var resultTask = service.AddTodo(task);
