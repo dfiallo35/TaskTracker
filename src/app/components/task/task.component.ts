@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Output, EventEmitter } from '@angular/core';
 import { Input } from '@angular/core';
 import { Task } from '../../services/task';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
@@ -16,13 +16,17 @@ import { TaskService } from '../../services/task.service';
 })
 export class TaskComponent {
   @Input() task!:Task;
+  @Output() deletedTask = new EventEmitter<Task>();
+
   taskService: TaskService = inject(TaskService);
   faEdit = faEdit;
   faTrash = faTrash;
+  
   editTask(task:Task){
-    
+    alert("Coming soon!");
   }
+  
   deleteTask(task:Task){
-    this.taskService.deleteTask(task.id??0);
+    this.deletedTask.emit(task);
   }
 }

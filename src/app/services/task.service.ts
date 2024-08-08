@@ -23,7 +23,7 @@ export class TaskService {
     this.tasks.push(task);
   }
 
-  deleteTask(taskId: number): void{
+  deleteTask(taskId?: number): void{
     this.tasks = this.tasks.filter(task => task.id !== taskId)
   }
 }

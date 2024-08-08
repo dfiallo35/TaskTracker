@@ -12,6 +12,6 @@
   </div>
   
   <div class="task-list">
-    <app-task *ngFor="let item of taskList" [task]="item">pan</app-task>
+    <app-task *ngFor="let item of taskList" [task]="item" (deletedTask)="deleteTask($event)"></app-task>
   </div>
 </div>

@@ -35,4 +35,9 @@ export class TaskListComponent {
   getCurrentDate(): string {
     return new Date().toDateString();
   }
+
+  deleteTask(task: Task){
+    this.taskService.deleteTask(task.id);
+    this.taskList = this.taskService.getAllTasks();
+  }
 }
