@@ -1,0 +1,1 @@
+web: dotnet publish -o deploy && dotnet deploy/backend.dll
