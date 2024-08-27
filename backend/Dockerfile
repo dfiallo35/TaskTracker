@@ -6,9 +6,23 @@ COPY . .
 RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/runtime:8.0
 
 WORKDIR /app
+
 COPY --from=builder /app/out .
 
-ENTRYPOINT ["dotnet", "backend.dll"]
+RUN adduser \
+    --disabled-password \
+    --gecos "" \
+    --home "/nonexistent" \
+    --shell "/sbin/nologin" \
+    --no-create-home \
+    --uid 10014 \
+    "choreo"
+# Use the above created unprivileged user
+USER 10014
+
+EXPOSE 5000
+
+ENTRYPOINT ["./backend"]
