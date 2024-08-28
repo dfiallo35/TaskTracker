@@ -23,4 +23,4 @@ RUN adduser \
 # Use the above created unprivileged user
 USER 10014
 
-ENTRYPOINT ["./backend"]
+ENTRYPOINT ["./out/backend"]
