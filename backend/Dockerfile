@@ -3,8 +3,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS builder
 WORKDIR /app
 COPY . .
 
-RUN dotnet restore
-RUN dotnet publish -c Release -o out
+RUN dotnet restore && \
+    dotnet publish -c PublishRelease -o out
 
 FROM mcr.microsoft.com/dotnet/runtime:8.0
 

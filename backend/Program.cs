@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.AspNetCore.OpenApi;
 
 
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 
 // Configure Services
 builder.Services.AddSingleton<ITaskService>(new InMemoryTaskService());
@@ -17,12 +21,20 @@ builder.Services.AddCors(options => {
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 // Redirect /tasks to /todos
 app.UseRewriter(new RewriteOptions().AddRedirect("tasks/(.*)", "todos/$1"));
 
 
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Hello World!")
+.WithOpenApi();
+
 
 // Add Todo Endpoint
 app.MapPost("/todos", (Todo task, ITaskService service) => {
@@ -42,23 +54,27 @@ app.MapPost("/todos", (Todo task, ITaskService service) => {
         return Results.ValidationProblem(errors);
     }
     return await next(context);
-});
+})
+.WithOpenApi();;
 
 // Get All Todos Endpoint
-app.MapGet("/todos", (ITaskService service) => service.GetTodos());
+app.MapGet("/todos", (ITaskService service) => service.GetTodos())
+.WithOpenApi();;
 
 // Get Todo by Id Endpoint
 app.MapGet("/todos/{id}", Results<Ok<Todo>, NotFound>(int id,ITaskService service) => {
     var targetTodo = service.GetTodoId(id);
     return targetTodo is null ? TypedResults.NotFound() : TypedResults.Ok(targetTodo);
-});
+})
+.WithOpenApi();;
 
 
 // Delete Todo by Id Endpoint
 app.MapDelete("/todos/{id}", (int id, ITaskService service) => {
     service.DeleteTodoById(id);
     return TypedResults.NoContent();
-});
+})
+.WithOpenApi();;
 
 
 
