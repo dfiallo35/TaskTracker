@@ -23,6 +23,4 @@ RUN adduser \
 # Use the above created unprivileged user
 USER 10014
 
-EXPOSE 5000
-
 ENTRYPOINT ["./backend"]
