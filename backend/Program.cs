@@ -20,16 +20,12 @@ builder.Services.AddCors(options => {
 
 
 var app = builder.Build();
+app.UseSwagger();
+app.UseSwaggerUI();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 // Redirect /tasks to /todos
 app.UseRewriter(new RewriteOptions().AddRedirect("tasks/(.*)", "todos/$1"));
-
 
 
 app.MapGet("/", () => "Hello World!")
