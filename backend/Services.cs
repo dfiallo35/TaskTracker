@@ -1,32 +1,41 @@
-
+using AutoMapper;
 
 
 interface ITaskService{
-    Todo? GetTodoId(int id);
-    List<Todo> GetTodos();
-    void DeleteTodoById(int id);
-    Todo AddTodo(Todo task);
+    TaskDTO? GetTaskId(int id);
+    List<TaskDTO> GetTasks();
+    void DeleteTaskById(int id);
+    TaskDTO AddTask(TaskDTO task);
 }
 
 
-class InMemoryTaskService: ITaskService{
-    private readonly List<Todo> _todos = [];
+class InMemoryTaskService : ITaskService{
+    private readonly List<Task> _tasks = new();
+    private readonly IMapper _mapper;
 
-    public Todo AddTodo(Todo task){
-        _todos.Add(task);
-        return task;
+    public InMemoryTaskService(IMapper mapper){
+        _mapper = mapper;
     }
 
-    public void DeleteTodoById(int id){
-        _todos.RemoveAll(t => id == t.Id);
+  public TaskDTO AddTask(TaskDTO task){
+        var newId = _tasks.Count + 1;
+        var newTask = _mapper.Map<Task>(task);
+        newTask.Id = newId;
+        _tasks.Add(newTask);
+        return _mapper.Map<TaskDTO>(newTask);
     }
 
-    public Todo? GetTodoId(int id){
-        return _todos.SingleOrDefault(t => id == t.Id);
+    public void DeleteTaskById(int id){
+        _tasks.RemoveAll(t => id == t.Id);
     }
 
-    public List<Todo> GetTodos(){
-        return _todos;
+    public TaskDTO? GetTaskId(int id){
+        var task = _tasks.SingleOrDefault(t => t.Id == id);
+        return task != null ? _mapper.Map<TaskDTO>(task) : null;
+    }
+
+    public List<TaskDTO> GetTasks(){
+        return _tasks.Select(_mapper.Map<TaskDTO>).ToList();
     }
 }
 
