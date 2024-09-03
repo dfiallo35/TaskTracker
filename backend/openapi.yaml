@@ -15,16 +15,16 @@ paths:
             text/plain:
               schema:
                 type: string
-  /todos:
+  /task:
     post:
       tags:
         - backend
-      operationId: Add Todo
+      operationId: Add Task
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Todo'
+              $ref: '#/components/schemas/TaskDTO'
         required: true
       responses:
         '201':
@@ -32,11 +32,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Todo'
+                $ref: '#/components/schemas/TaskDTO'
     get:
       tags:
         - backend
-      operationId: Get All Todos
+      operationId: Get All Tasks
       responses:
         '200':
           description: OK
@@ -45,12 +45,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Todo'
-  '/todos/{id}':
+                  $ref: '#/components/schemas/TaskDTO'
+  '/task/{id}':
     get:
       tags:
         - backend
-      operationId: Get Todo by Id
+      operationId: Get Task by Id
       parameters:
         - name: id
           in: path
@@ -64,13 +64,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Todo'
+                $ref: '#/components/schemas/TaskDTO'
         '404':
           description: Not Found
     delete:
       tags:
         - backend
-      operationId: Delete Todo by Id
+      operationId: Delete Task by Id
       parameters:
         - name: id
           in: path
@@ -83,7 +83,9 @@ paths:
           description: No Content
 components:
   schemas:
-    Todo:
+    TaskDTO:
+      required:
+        - name
       type: object
       properties:
         id:
@@ -92,9 +94,6 @@ components:
         name:
           type: string
           nullable: true
-        dueDate:
-          type: string
-          format: date-time
         isCompleted:
           type: boolean
       additionalProperties: false
