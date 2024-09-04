@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { TaskService } from '../../services/task.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-task-list',
@@ -20,24 +21,29 @@ export class TaskListComponent {
   // ICONS
   faPlus = faPlus;
 
-  constructor() {
-    this.taskList = this.taskService.getAllTasks();
+  constructor(private cdr: ChangeDetectorRef) {
+    this.getAllTasks();
   }
 
-  addTask(task: HTMLInputElement){
-    if (task.value !== '') {
-      this.taskService.addTask({name: task.value, isCompleted: false});
-      this.taskList = this.taskService.getAllTasks();
+  async addTask(task: HTMLInputElement){
+    if (task.value.trim() !== '') {
+      await this.taskService.addTask({name: task.value, isCompleted: false});
+      this.taskList = await this.taskService.getAllTasks();
+      this.cdr.detectChanges();
       task.value = '';
     }
   }
 
-  getCurrentDate(): string {
+  async getCurrentDate(): Promise<string> {
     return new Date().toDateString();
   }
 
-  deleteTask(task: Task){
-    this.taskService.deleteTask(task.id);
-    this.taskList = this.taskService.getAllTasks();
+  async deleteTask(task: Task){
+    await this.taskService.deleteTask(task.id??0);
+    await this.taskService.getAllTasks().then(data => this.taskList = data);
+  }
+
+  async getAllTasks(){
+    this.taskList = await this.taskService.getAllTasks();
   }
 }
