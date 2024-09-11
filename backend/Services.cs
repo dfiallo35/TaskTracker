@@ -11,18 +11,18 @@ interface ITaskService{
 
 class InMemoryTaskService : ITaskService{
     private readonly List<Task> _tasks = new();
-    private readonly IMapper _mapper;
+    private readonly IMapper mapper;
 
     public InMemoryTaskService(IMapper mapper){
-        _mapper = mapper;
+        this.mapper = mapper;
     }
 
   public TaskDTO AddTask(TaskDTO task){
         var newId = _tasks.Count + 1;
-        var newTask = _mapper.Map<Task>(task);
+        var newTask = mapper.Map<Task>(task);
         newTask.Id = newId;
         _tasks.Add(newTask);
-        return _mapper.Map<TaskDTO>(newTask);
+        return mapper.Map<TaskDTO>(newTask);
     }
 
     public void DeleteTaskById(int id){
@@ -31,52 +31,49 @@ class InMemoryTaskService : ITaskService{
 
     public TaskDTO? GetTaskId(int id){
         var task = _tasks.SingleOrDefault(t => t.Id == id);
-        return task != null ? _mapper.Map<TaskDTO>(task) : null;
+        return task != null ? mapper.Map<TaskDTO>(task) : null;
     }
 
     public List<TaskDTO> GetTasks(){
-        return _tasks.Select(_mapper.Map<TaskDTO>).ToList();
+        return _tasks.Select(mapper.Map<TaskDTO>).ToList();
     }
 }
 
 
-// class SqliteTaskService: ITaskService{
-//     private readonly TaskContext _context;
-//     public SqliteTaskService(){
-//         _context = new TaskContext();
-//         _context.Database.EnsureCreated();
-//     }
+class SqliteTaskService: ITaskService{
+    private readonly TaskContext context;
+    private readonly IMapper mapper;
+    public SqliteTaskService(IMapper mapper){
+        context = new TaskContext();
+        context.Database.EnsureCreated();
+        this.mapper = mapper;
+    }
 
 
-//     public Todo AddTodo(Todo task){
-//         var newTask = new Task{
-//             Name = task.Name,
-//             DueDate = task.DueDate,
-//             IsCompleted = task.IsCompleted
-//         };
-        
-//         _context.Tasks.Add(newTask);
-//         _context.SaveChanges();
-//         return new Todo(newTask.Id, newTask.Name, newTask.DueDate, newTask.IsCompleted);
-//     }
+    public TaskDTO AddTask(TaskDTO task){
+        var newTask = mapper.Map<Task>(task);
+        context.Tasks.Add(newTask);
+        context.SaveChanges();
+        return mapper.Map<TaskDTO>(newTask);
+    }
 
-//     public void DeleteTodoById(int id){
-//         var task = _context.Tasks.Find(id);
-//         if (task != null){
-//             _context.Tasks.Remove(task);
-//             _context.SaveChanges();
-//         }
-//     }
+    public void DeleteTaskById(int id){
+        var task = context.Tasks.Find(id);
+        if (task != null){
+            context.Tasks.Remove(task);
+            context.SaveChanges();
+        }
+    }
 
-//     public Todo? GetTodoId(int id){
-//         var task = _context.Tasks.Find(id);
-//         if (task != null){
-//             return new Todo(task.Id, task.Name, task.DueDate, task.IsCompleted);
-//         }
-//         return null;
-//     }
+    public TaskDTO? GetTaskId(int id){
+        var task = context.Tasks.Find(id);
+        if (task != null){
+            return mapper.Map<TaskDTO>(task);
+        }
+        return null;
+    }
 
-//     public List<Todo> GetTodos(){
-//         return [.. _context.Tasks.Select(t => new Todo(t.Id, t.Name, t.DueDate, t.IsCompleted))];
-//     }
-// }
+    public List<TaskDTO> GetTasks(){
+        return [.. context.Tasks.Select(t => mapper.Map<TaskDTO>(t))];
+    }
+}
